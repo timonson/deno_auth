@@ -1,8 +1,8 @@
 import { rpcMethods } from "./rpcMethods.ts";
-import { getErrorPage } from "./errorPage/getErrorPage.ts";
 import {
   createStaticFilePath,
   fetch,
+  getErrorPage,
   importMetaResolve,
   respond as respondRpc,
   serve,

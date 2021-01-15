@@ -1,6 +1,7 @@
 export { serve } from "https://deno.land/std@0.82.0/http/server.ts";
 export { respond } from "https://deno.land/x/gentle_rpc@v2.1/mod.ts";
 export { fetch } from "https://cdn.jsdelivr.net/gh/timonson/salad@v0.1.0/fetch/fetchPolyfill.ts";
+export { getErrorPage } from "https://cdn.jsdelivr.net/gh/timonson/salad@v0.1.2/errorPage/getErrorPage.ts";
 export {
   createStaticFilePath,
   importMetaResolve,

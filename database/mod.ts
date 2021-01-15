@@ -7,11 +7,9 @@ export type { DB } from "../deps.ts";
 export const db = new DB("account.db");
 
 db.query(
-  "CREATE TABLE IF NOT EXISTS offer(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, description TEXT, content TEXT, author TEXT)",
-);
-db.query(
   "CREATE TABLE IF NOT EXISTS account(id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT NOT NULL UNIQUE, user TEXT NOT NULL UNIQUE, password TEXT NOT NULL)",
 );
+
 export function select(db: DB) {
   return (str: string) => {
     try {
