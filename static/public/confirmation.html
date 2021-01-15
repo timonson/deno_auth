@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Verification</title>
+    <link rel="icon" href="data:," />
+    <script type="module">
+      import { createRemote } from "https://cdn.jsdelivr.net/gh/timonson/gentle_rpc@bdded1249a3d3afc42a2ac2a7018eca407cd2248/client/dist/remote.js"
+
+      const remote = createRemote(window.location.origin)
+
+      function handleRegistrationConfirmation(result) {
+        localStorage.setItem("jwt", result.jwt)
+        window.location.href = window.location.origin
+      }
+
+      function handleRegistrationConfirmationError(err) {
+        window.location.href = window.location.origin
+      }
+      const jwt = location.href.split(window.location.origin+"/confirmation/")[1]
+      remote.confirmRegistration
+        .auth(jwt)()
+        .then(handleRegistrationConfirmation)
+        .catch(handleRegistrationConfirmationError)
+    </script>
+  </head>
+  <body>
+  </body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://deno.land/x/denon/schema.json",
+  "scripts": {
+    "start": {
+      "cmd": "deno run --unstable -A /home/ubustreet/Workspace/bundler.ts anchorButton.ts",
+      "desc": "Run the main server."
+    }
+  },
+  "watcher": {
+    "interval": 350,
+    "exts": ["ts", "html"],
+    "match": ["*.*"],
+    "skip": ["*/.git/*"]
+  }
+}

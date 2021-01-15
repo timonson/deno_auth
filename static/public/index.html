@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Public</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="./styles/home.css" />
+    <script src="./scripts/components.js" type="module"></script>
+  </head>
+  <body style="visibility: hidden;">
+    <my-greeter
+      before-text="You "
+      topic="are "
+      between-text="logged-"
+      mood="out"
+      after-text="!"
+    ></my-greeter>
+    <stylish-anchor id="login">Login</stylish-anchor>
+    <modal-window id="loginModalWindow"
+      ><div slot="modal-content">
+        <h2>Login</h2>
+        <p>
+          Welcome back!
+        </p>
+        <nice-form
+          id="loginForm"
+          items='[["Email:","email"],["Password:","password"]]'
+          button-value="Login"
+          is-required
+        ></nice-form>
+        <p>No account yet? <a id="registerAnchor">Register</a></p>
+      </div></modal-window
+    >
+    <modal-window id="registerModalWindow"
+      ><div slot="modal-content">
+        <h2>Register</h2>
+        <p>
+          We are happy to welcome you!
+        </p>
+        <nice-form
+          id="registerForm"
+          items='[["Email:","email"],["Username:","text"],["Password:","password"]]'
+          button-value="Register"
+          is-required
+        ></nice-form></div
+    ></modal-window>
+    <modal-window id="successModal"
+      ><div slot="modal-content">
+        <h2>
+          <img
+            id="successImg"
+            loading="lazy"
+            style="
+              filter: invert(52%) sepia(91%) saturate(354%) hue-rotate(106deg)
+                brightness(92%) contrast(90%);
+            "
+            src="./media/heroicons/solid/check-circle.svg"
+            alt="Success"
+          />
+        </h2>
+        <p>
+          We sent a confirmation email to you.
+        </p>
+      </div>
+    </modal-window>
+    <template id="loginErrorMessageTemplate">
+      <p class="errorMessage" style="color: salmon;">
+        Wrong email or password. Please try again!
+      </p>
+    </template>
+    <template id="registerErrorMessageTemplate">
+      <p class="errorMessage" style="color: salmon;">
+        Your username and password must be at lease 3 letters long!
+      </p>
+    </template>
+    <script type="module">
+      import { createRemote } from "https://cdn.jsdelivr.net/gh/timonson/gentle_rpc@bdded1249a3d3afc42a2ac2a7018eca407cd2248/client/dist/remote.js"
+      import { findElementInEventPath } from "./scripts/utils.js"
+      import {
+        handleAutoLogin,
+        handleAutoLoginFailure,
+        handleLogin,
+        handleLoginOrRegisterFailure,
+        handleRegister,
+      } from "./scripts/handlers.js"
+
+      const remote = createRemote(window.location.origin)
+
+      remote.loginAuto
+        .auth(localStorage.getItem("jwt"))()
+        .then(handleAutoLogin)
+        .catch(handleAutoLoginFailure)
+
+      document.getElementById("login").addEventListener("click", (event) => {
+        document.body.querySelector("#loginModalWindow").isVisible = ""
+      })
+
+      document
+        .getElementById("registerAnchor")
+        .addEventListener("click", (event) => {
+          document.getElementById("loginModalWindow").isVisible = null
+          document.getElementById("registerModalWindow").isVisible = ""
+        })
+
+      document.body.addEventListener("niceFormSubmit", async (event) => {
+        if (findElementInEventPath(event, "#loginModalWindow")) {
+          const result = await remote
+            .login({
+              email: event.detail.email,
+              password: event.detail.password,
+            })
+            .then(handleLogin)
+            .catch((err) =>
+              handleLoginOrRegisterFailure(err, "#loginModalWindow")
+            )
+        } else if (findElementInEventPath(event, "#registerModalWindow")) {
+          const result = await remote
+            .register({
+              user: event.detail.username,
+              email: event.detail.email,
+              password: event.detail.password,
+            })
+            .then(handleRegister)
+            .catch((err) =>
+              handleLoginOrRegisterFailure(err, "#registerModalWindow")
+            )
+        }
+      })
+    </script>
+  </body>
+</html>

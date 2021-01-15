@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Private</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="./styles/home.css" />
+    <script src="./scripts/components.js" type="module"></script>
+  </head>
+  <body>
+    <my-greeter
+      before-text="You "
+      topic="are "
+      between-text="logged-"
+      mood="in"
+      after-text="!"
+    ></my-greeter>
+    <stylish-anchor id="logout" inner-content="Logout"></stylish-anchor>
+    <script type="module">
+      document.getElementById("logout").addEventListener("click", (event) => {
+        localStorage.removeItem("jwt")
+        window.location.href = window.location.origin
+      })
+    </script>
+  </body>
+</html>

@@ -1,0 +1,73 @@
+@import url("./modalWindow.css");
+:root {
+  --columnPaddingNormal: 16px;
+  --primaryDark: #0a2540;
+  --primaryLight: #fff;
+  --primaryNeutralLight: #f6f9fc;
+  --primaryNeutralMid: #adbdcc;
+  --primaryNeutralMidLight: #525f7f;
+  --primaryNeutralDark: #425466;
+  --primaryNeutralVeryDark: #0a2540;
+  --secondaryTeal: #00d4ff;
+  --secondaryGreen: #24b47e;
+  --secondaryPurple: #635bff;
+  --secondaryPurpleLight: #b76ac4;
+  --secondaryPurpleDark: #32325d;
+  --secondaryRed: #ff4433;
+  --secondaryGradient: linear-gradient(
+    150deg,
+    orange 15%,
+    purple 70%,
+    #a6ffcb 94%
+  );
+  --fontWeightNormal: 400;
+  --fontWeightBold: 600;
+  --fontSizeNormal: 19px;
+  --fontFamilyNormal: Arial;
+  --lineHeightNormal: 27px;
+  --fontNormal: var(--fontWeightNormal) var(--fontSizeNormal, 18px) /
+    var(--lineHeightNormal, 1.555) var(--fontFamilyNormal);
+  --fontH2: var(--fontWeightBold) 19.5px / var(--lineHeightNormal, 1.555)
+    var(--fontFamilyNormal);
+  --stylishAnchorBg: rgb(255, 255, 255, 0.2);
+  --stylishAnchorBgOnHover: rgb(255, 255, 255, 0.4);
+  --stylishAnchorColor: var(--secondaryPurple);
+  overflow-x: hidden;
+  text-rendering: optimizeLegibility;
+  min-height: 100%;
+  font-family: var(--fontFamilyNormal);
+  cursor: default;
+  overflow-x: hidden;
+  word-break: break-word;
+  box-sizing: border-box;
+  color: white;
+}
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+body {
+  min-height: 100%;
+  max-width: 1112px;
+  margin: 0 auto;
+  padding: 0 var(--columnPaddingNormal);
+  background: var(--secondaryGradient);
+}
+my-greeter {
+  text-align: left;
+  margin: 5em 0 5em;
+  --greeterThemeColor: var(--secondaryTeal);
+}
+p {
+  font: var(--fontNormal);
+}
+a {
+  cursor: pointer;
+  color: var(--secondaryTeal);
+  transition: 150ms cubic-bezier(0.215, 0.61, 0.355, 1);
+  transition-property: background-color, opacity;
+}
+a:hover {
+  opacity: 0.85;
+}
