@@ -11,6 +11,7 @@ import {
 const proto = "http";
 const addr = "0.0.0.0:8000";
 const root = "static/public";
+// bundle webComponents:
 const subprocess = Deno.run(
   {
     cmd: [
