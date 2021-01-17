@@ -23,7 +23,7 @@ const algorithms = { jwt: "HS256" as const };
 
 export async function createJwt(payload: Payload) {
   return await create(
-    { alg: "HS256", typ: "JWT" },
+    { alg: algorithms.jwt, typ: "JWT" },
     payload,
     keys.jwt,
   );
@@ -43,7 +43,11 @@ export async function verifyJwt(jwt: string): Promise<Result<Payload, Error>> {
       algorithms.jwt,
     );
     if (isPayload(payload)) return success(payload);
-    else throw Error("The JWT payload has no user or email properties.");
+    else {
+      throw Error(
+        "The payload of the jwt has no valid user or email property.",
+      );
+    }
   } catch (err) {
     return failure(err);
   }

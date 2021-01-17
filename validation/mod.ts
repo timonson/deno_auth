@@ -37,7 +37,7 @@ export function validateRegisterInput(
   if (isObjectWide(input)) {
     if (
       isEmail(input.email) && isStringWithLengthBetween(2, 16, input.user) &&
-      isStringWithLengthBetween(2, 101, input.password)
+      isStringWithLengthBetween(5, 101, input.password)
     ) {
       return success(
         {
@@ -56,7 +56,7 @@ export function validateLoginInput(
 ): Result<EmailAndPassword, Error> {
   if (isObjectWide(input)) {
     if (
-      isEmail(input.email) && isStringWithLengthBetween(2, 101, input.password)
+      isEmail(input.email) && isStringWithLengthBetween(5, 101, input.password)
     ) {
       return success({ email: input.email, password: input.password });
     }
