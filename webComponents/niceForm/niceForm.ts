@@ -6,24 +6,19 @@ import {
   ShadowBase,
 } from "../deps.ts";
 
-// Calculating Color: Dynamic Color Theming with Pure CSS
-// https://una.im/css-color-theming/
+type Input = {
+  label: string;
+  type: string;
+  id: string;
+  attributes: [string, string][];
+}[];
+
 @customElement("nice-form")
 export class NiceForm extends ShadowBase {
-  @property()
-  items = [[""]];
-  @property()
-  primaryHsl: Attribute = null;
-  @property()
-  buttonValue: Attribute = "Submit";
-  @property()
-  buttonName: Attribute = null;
-  @property()
-  isRequired: Attribute = null;
-  @property()
-  action: Attribute = null;
-  @property()
-  method: Attribute = null;
+  @property({ wait: true, reflect: false })
+  input: Input = [];
+  @property({ reflect: false })
+  form: [string, string][] = [];
 
   render() {
     this.css`
@@ -69,10 +64,10 @@ export class NiceForm extends ShadowBase {
   font: var(--niceFormInputFont);
 
       }
-    input:focus:not(#submit) {
+    input:focus:not(#submit-container input) {
        box-shadow: 0 0 0 1.4pt var(--secondaryTeal);
     }
-      #submit {
+      #submit-container input {
         font:inherit;
         font-size:17px;
         font-weight: 500;
@@ -87,64 +82,67 @@ export class NiceForm extends ShadowBase {
         transition-property: background-color, opacity;
         max-width: var(--niceFormSubmitMaxWidth);
       }
-      #submit:hover {
+      #submit-container input:hover {
         background:var(--niceFormSubmitBgOnHover);
         color:var(--niceFormSubmitColorOnHover);
       }
     `;
-    return this.html`
-      <form @id="formId" ${this.action &&
-      `action="${this.action}"`} ${this.method && `method="${this.method}"`}">
+    this.html`
+      <form @id="formId" 
         ${
-      this.items[0].length > 0 && !!this.items[0][0]
-        ? this.items.map(
-          ([label, type, placeholder]) =>
-            `
+      this.form.map(([attribute, val]) => `${attribute}="${val}"`).join(
+        " ",
+      )
+    }>
+
+        ${
+      this.input.map(({ label, type, id, attributes }) =>
+        type !== "submit"
+          ? `
                   <label for="${label}"
                     >${label}<input
                       type="${type}"
                       name="${label}"
-                      id="${label.toLowerCase().trim().slice(0, -1)}"
-                      placeholder="${placeholder || ""}"
-                      ${isNotNull(this.isRequired) ? "required" : ""}
-                      spellcheck="false"
+                      id="${id}"
+                      ${
+            attributes.map(([attribute, val]) => `${attribute}="${val}"`).join(
+              " ",
+            )
+          }
                   /></label>
-                `,
-        )
-        : ""
-    }
+                `
+          : `
         <div id="submit-container">
           <input
-            name="${this.buttonName}"
+            name="${id}"
             type="submit"
-            @id="submit onclick=${(e) => this.handleButtonClick(e)}"
-            value="${this.buttonValue}"
+            value="${label}"
+                      ${
+            attributes.map(([attr, val]) => `${attr}="${val}"`).join(
+              " ",
+            )
+          }
+            id="${id}"
           />
-        </div>
-      </form>
+        </div>`
+      )
+    }
+        </form>
     `;
+    (this.root.querySelector("#submit-container input") as HTMLInputElement)
+      .addEventListener(
+        "click",
+        (err) => this.handleButtonClick(err),
+      );
   }
 
   handleButtonClick(event: MouseEvent) {
     event.preventDefault();
     if ((this.dom.id.formId as HTMLFormElement).reportValidity()) {
-      const entries = this.items.map(([label]) => {
-        return [
-          label.toLowerCase().trim().slice(0, -1),
-          label
-              .toLowerCase()
-              .trim()
-              .slice(0, -1)
-              .match(/^[0-9a-zA-Z]+$/) &&
-            this.root.querySelector(
-              `#${label.toLowerCase().trim().slice(0, -1)}`,
-            )
-            ? (this.root.querySelector(
-              `#${label.toLowerCase().trim().slice(0, -1)}`,
-            ) as HTMLInputElement).value
-            : "",
-        ];
-      });
+      const entries = this.input.map(({ id }) => ([
+        id,
+        (this.root.querySelector(`#${id}`) as null | HTMLInputElement)?.value,
+      ]));
       this.dispatchEvent(
         new CustomEvent("niceFormSubmit", {
           detail: Object.fromEntries(entries),
