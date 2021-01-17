@@ -1,13 +1,14 @@
 import {
   chainResult,
   failure,
-  foldResult,
+  foldIfSuccessElseThrow,
   getNumericDate,
-  ifFailed,
+  ServerRequest,
   success,
 } from "../deps.ts";
+import { authenticate } from "./authentication.ts";
 import { validateLoginInput } from "../validation/mod.ts";
-import { createJwt, verifyPassword } from "../crypto/mod.ts";
+import { createJwt, Payload, verifyPassword } from "../crypto/mod.ts";
 import { selectPasswordAndUserByEmail } from "../database/mod.ts";
 import type { EmailAndPassword, UserAndEmail } from "./types.ts";
 
@@ -31,7 +32,16 @@ async function ifSuccessfulLogin(
 }
 
 export async function login(input: unknown) {
-  return await foldResult(ifSuccessfulLogin)(ifFailed)(
+  return await foldIfSuccessElseThrow(ifSuccessfulLogin)(
     await chainResult(verifyLogin)(validateLoginInput(input)),
   );
+}
+
+export async function loginAuto({ req }: { req: ServerRequest }) {
+  return await foldIfSuccessElseThrow(async (payload: Payload) => ({
+    isSuccess: true,
+    html: await Deno.readTextFile("./static/private/index.html"),
+    email: payload.email,
+    user: payload.user,
+  }))((await authenticate({ req })));
 }

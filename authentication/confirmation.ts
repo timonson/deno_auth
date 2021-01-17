@@ -1,9 +1,8 @@
 import {
   chainResult,
   failure,
-  foldResult,
+  foldIfSuccessElseThrow,
   getNumericDate,
-  ifFailed,
   Result,
   ServerRequest,
   success,
@@ -21,17 +20,19 @@ function checkIfRegistrable(
       { user: payload.user, email: payload.email, password: payload.hash },
     );
   } else {
-    return failure(Error("This JWT is not suited for registration."));
+    return failure(Error("This jwt is not suited for registration."));
   }
 }
 
 export async function confirmRegistration({ req }: { req: ServerRequest }) {
-  return await foldResult(async (input: UserAndEmailAndPassword) => (
+  return await foldIfSuccessElseThrow(async (
+    input: UserAndEmailAndPassword,
+  ) => (
     {
       isSuccess: true,
       jwt: await createJwt({ ...input, exp: getNumericDate(12000 * 60) }),
     }
-  ))(ifFailed)(
+  ))(
     chainResult(insertIntoAccount)(
       chainResult(checkIfRegistrable)(
         await authenticate({ req }),

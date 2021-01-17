@@ -1,4 +1,8 @@
-import { chainResult, foldResult, getNumericDate, ifFailed } from "../deps.ts";
+import {
+  chainResult,
+  foldIfSuccessElseThrow,
+  getNumericDate,
+} from "../deps.ts";
 import { validateRegisterInput } from "../validation/mod.ts";
 import { sendEmail } from "../smtp/mod.ts";
 import { createHash, createJwt } from "../crypto/mod.ts";
@@ -23,7 +27,7 @@ async function sendJwt(input: UserAndEmailAndPassword) {
 }
 
 export async function register(input: unknown) {
-  return foldResult((input: UserAndEmail) => input)(ifFailed)(
+  return foldIfSuccessElseThrow((input: UserAndEmail) => input)(
     await chainResult(sendJwt)(
       chainResult(failOnUserUnavailability)(
         chainResult(failOnEmailUnavailability)(
