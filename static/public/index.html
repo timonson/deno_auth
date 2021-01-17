@@ -22,12 +22,33 @@
         <p>
           Welcome back!
         </p>
-        <nice-form
-          id="loginForm"
-          items='[["Email:","email"],["Password:","password"]]'
-          button-value="Login"
-          is-required
-        ></nice-form>
+        <nice-form id="loginForm"></nice-form>
+        <script type="module">
+          const loginForm = document.getElementById("loginForm")
+          loginForm.input = [
+            {
+              label: "Email:",
+              type: "email",
+              id: "email",
+              attributes: [
+                ["required", ""],
+                ["minlength", "3"],
+                ["maxlength", "100"],
+              ],
+            },
+            {
+              label: "Password:",
+              type: "text",
+              id: "password",
+              attributes: [
+                ["required", ""],
+                ["minlength", "6"],
+                ["maxlength", "100"],
+              ],
+            },
+            { label: "Login", type: "submit", id: "submit", attributes: [] },
+          ]
+        </script>
         <p>No account yet? <a id="registerAnchor">Register</a></p>
       </div></modal-window
     >
@@ -37,13 +58,50 @@
         <p>
           We are happy to welcome you!
         </p>
-        <nice-form
-          id="registerForm"
-          items='[["Email:","email"],["Username:","text"],["Password:","password"]]'
-          button-value="Register"
-          is-required
-        ></nice-form></div
-    ></modal-window>
+        <nice-form id="registerForm"></nice-form>
+        <script type="module">
+          const loginForm = document.getElementById("registerForm")
+          loginForm.input = [
+            {
+              label: "Email:",
+              type: "email",
+              id: "email",
+              attributes: [
+                ["required", ""],
+                ["minlength", "3"],
+                ["maxlength", "100"],
+              ],
+            },
+            {
+              label: "Username:",
+              type: "text",
+              id: "username",
+              attributes: [
+                ["required", ""],
+                ["minlength", "3"],
+                ["maxlength", "15"],
+              ],
+            },
+            {
+              label: "Password:",
+              type: "text",
+              id: "password",
+              attributes: [
+                ["required", ""],
+                ["minlength", "6"],
+                ["maxlength", "100"],
+              ],
+            },
+            {
+              label: "Register",
+              type: "submit",
+              id: "submit",
+              attributes: [],
+            },
+          ]
+        </script>
+      </div></modal-window
+    >
     <modal-window id="successModal"
       ><div slot="modal-content">
         <h2>
@@ -70,8 +128,7 @@
     </template>
     <template id="registerErrorMessageTemplate">
       <p class="errorMessage" style="color: salmon;">
-        Do you already have an account? Your username and password must be at
-        lease 3 letters long!
+        An account with this email address already exists.
       </p>
     </template>
     <script type="module">

@@ -17,13 +17,14 @@
       function handleRegistrationConfirmationError(err) {
         window.location.href = window.location.origin
       }
-      const jwt = location.href.split(window.location.origin+"/confirmation/")[1]
+      const jwt = location.href.split(
+        window.location.origin + "/confirmation/"
+      )[1]
       remote.confirmRegistration
         .auth(jwt)()
         .then(handleRegistrationConfirmation)
         .catch(handleRegistrationConfirmationError)
     </script>
   </head>
-  <body>
-  </body>
+  <body></body>
 </html>
