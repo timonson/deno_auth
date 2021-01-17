@@ -49,14 +49,9 @@ function setSendConfigPartially(
 
 export function send(config: ConnectConfigWithAuthentication) {
   return async (sendConfig: SendConfig) => {
-    // Remove try...catch statement if you want to 'await' this function.
-    try {
-      await client.connectTLS(config);
-      await client.send(sendConfig);
-      await client.close();
-    } catch (err) {
-      console.log(err);
-    }
+    await client.connectTLS(config);
+    await client.send(sendConfig);
+    await client.close();
   };
 }
 
@@ -67,7 +62,7 @@ export async function sendEmail(
   { user, email, jwt }: UserAndEmailAndJwt,
 ): Promise<Result<UserAndEmail, Error>> {
   try {
-    sendApplied(setSendConfig({ user, email, jwt }));
+    await sendApplied(setSendConfig({ user, email, jwt }));
     return success({ user, email });
   } catch (err) {
     return failure(err);
