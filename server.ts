@@ -11,6 +11,25 @@ import {
 const proto = "http";
 const addr = "0.0.0.0:8000";
 const root = "static/public";
+const { files, diagnostics } = await Deno.emit(
+  "./webComponents/components.ts",
+  {
+    bundle: "esm",
+    // check: false,
+    compilerOptions: {
+      lib: ["esnext", "es2017", "dom", "dom.iterable", "deno.ns"],
+    },
+  },
+);
+if (diagnostics.length) {
+  // there is something that impacted the emit
+  console.warn(Deno.formatDiagnostics(diagnostics));
+} else {
+  await Deno.writeFile(
+    "./static/public/scripts/components.js",
+    new TextEncoder().encode(files["deno:///bundle.js"]),
+  );
+}
 
 console.log(`${proto.toUpperCase()} server listening on ${proto}://${addr}/`);
 
