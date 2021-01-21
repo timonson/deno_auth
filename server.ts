@@ -11,22 +11,7 @@ import {
 const proto = "http";
 const addr = "0.0.0.0:8000";
 const root = "static/public";
-// bundle webComponents:
-const subprocess = Deno.run(
-  {
-    cmd: [
-      "deno",
-      "run",
-      "-A",
-      "--unstable",
-      importMetaResolve(import.meta.url, "./bundler.ts"),
-      importMetaResolve(import.meta.url, "./webComponents/components.ts"),
-      importMetaResolve(import.meta.url, "./static/public/scripts"),
-    ],
-  },
-);
 
-console.log("subprocess:", await subprocess.status());
 console.log(`${proto.toUpperCase()} server listening on ${proto}://${addr}/`);
 
 for await (const req of serve(addr)) {

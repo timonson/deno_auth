@@ -1,5 +1,5 @@
-export { serve } from "https://deno.land/std@0.82.0/http/server.ts";
-export { respond } from "https://deno.land/x/gentle_rpc@v2.1/mod.ts";
+export { serve } from "https://deno.land/std@0.84.0/http/server.ts";
+export { respond } from "https://deno.land/x/gentle_rpc@v2.2/mod.ts";
 export { fetch } from "https://cdn.jsdelivr.net/gh/timonson/salad@v0.1.2/fetch/fetchPolyfill.ts";
 export { getErrorPage } from "https://cdn.jsdelivr.net/gh/timonson/salad@v0.1.2/errorPage/getErrorPage.ts";
 export {
@@ -11,7 +11,7 @@ export {
   getNumericDate,
   verify,
 } from "https://deno.land/x/djwt@v2.0/mod.ts";
-export { encodeToString as convertUint8ArrayToHex } from "https://deno.land/std@0.83.0/encoding/hex.ts";
+export { encodeToString as convertUint8ArrayToHex } from "https://deno.land/std@0.84.0/encoding/hex.ts";
 export { create as createHash } from "https://deno.land/x/djwt@v2.0/signature.ts";
 export { DB } from "https://deno.land/x/sqlite@v2.3.2/mod.ts";
 export {
@@ -30,7 +30,7 @@ export type {
   ConnectConfigWithAuthentication,
   SendConfig,
 } from "https://deno.land/x/smtp@v0.7.0/mod.ts";
-export type { ServerRequest } from "https://deno.land/std@0.82.0/http/server.ts";
+export type { ServerRequest } from "https://deno.land/std@0.84.0/http/server.ts";
 export type {
   Failure,
   Result,
