@@ -1,6 +1,6 @@
 # deno_auth
 
-Authentication based on Json Web Tokens (JWT) and SMTP in deno.
+Authentication based on Json Web Tokens (JWT) and SMTP in deno. Proof of concept.
 
 ## How it works
 
